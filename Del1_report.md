@@ -55,10 +55,24 @@ The Device Controller-Monitor (DCM) acts as the primary interface for programmin
 #### State Machine Design
 [State machine design for each pacing mode with diagrams or tabular method]
 
-- **AOO Mode**:
-- **VOO Mode**:
-- **AAI Mode**:
-- **VVI Mode**:
+The following permanent state pacing modes must be implemented using Simulink stateflows. All modes require the use of programmable parameters covering pulse characteristics (amplitude and width) and rate characteristics (limits and delays)\
+
+• **AOO** (Atrial Paced, None Sensed, No Response):
+    ◦ Mechanism: Provides Asynchronous Pacing in the Atrium, where paces are delivered without regard to senses.
+    ◦ Requirements: Implementation must utilize the Lower Rate Limit (LRL) and Upper Rate Limit (URL)
+. Must use independently programmable Atrial Amplitude and Atrial Pulse Width. <br>
+
+• **VOO** (Ventricular Paced, None Sensed, No Response):
+    ◦ Mechanism: Provides Asynchronous Pacing in the Ventricle, where paces are delivered without regard to senses.
+    ◦ Requirements: Implementation must utilize the LRL and URL. Must use independently programmable Ventricular Amplitude and Ventricular Pulse Width.<br>
+    
+• **AAI** (Atrial Paced, Atrial Sensed, Inhibited Response):
+    ◦ Mechanism: Provides Inhibited Pacing in the Atrium. An atrial sense (AS) inhibits a pending atrial pace (AP). The LRL interval starts at an atrial sensed or paced event
+    ◦ Requirements: Implementation must utilize LRL, URL, Atrial Amplitude, Atrial Pulse Width, Atrial Sensitivity. Requires the Atrial Refractory Period (ARP) <br>
+    
+• **VVI** (Ventricular Paced, Ventricular Sensed, Inhibited Response):
+    ◦ Mechanism: Provides Inhibited Pacing in the Ventricle. A ventricular sense (VS) inhibits a pending ventricular pace (VP). The LRL interval starts at a ventricular sensed or paced event
+    ◦ Requirements: Implementation must utilize LRL, URL, Ventricular Amplitude, Ventricular Pulse Width, Ventricular Sensitivity. Requires the Ventricular Refractory Period (VRP).
 
 #### Simulink Diagram
 [Insert Simulink diagram screenshot]
