@@ -7,7 +7,7 @@ Fall 2025
 
 ## 1. Group Members
 
-- Name, MACID, Student Number
+- Justin Shin, shinj37, 400467486
 - Name, MACID, Student Number
 - Name, MACID, Student Number
 
@@ -17,7 +17,15 @@ Fall 2025
 
 ### 2.1 Introduction
 
-[Briefly describe the purpose of the pacemaker system, the goals of this deliverable, and the scope of this part.]
+The PACEMAKER system is fundamentally designed to provide dual chamber, rate adaptive bradycardia pacing support. This system consists of a Pulse Generator (PG) device, which monitors and regulates the patient's heart rate to detect and provide therapy for bradycardia conditions, and a Device Controller-Monitor (DCM), which is the primary tool used by physicians for programming, interrogation, and follow-up. The PG device offers programmable, single- and dual-chamber, rate-adaptive pacing, using leads implanted in the patient to sense intrinsic electrical signals and deliver pacing pulses. The system is indicated for use during the implantation, ambulatory, follow-up, and explantation phases of the device's life cycle
+.
+The main objective of Deliverable 1 is to parse the provided documentation to distill the specific information necessary to build a functional pacemaker and DCM
+. This requires properly identifying the requirements, building a design that satisfies them, implementing the design faithfully (using Simulink for the pacemaker and a language of choice for the DCM), and writing appropriate documentation. Specifically, the scope involves two major parts: implementing real-time software on the hardware platform and documenting the development efforts
+.
+The scope of this deliverable is divided into Pacemaker Design (Part 1) and DCM Design (Part 2)
+. Part 1 requires implementing Simulink stateflows for four permanent state pacing modes: AOO, VOO, AAI, and VVI. These stateflows must utilize programmable parameters, including pulse characteristics (width and regulated amplitude) and rate characteristics (limits and delays), while applying hardware hiding. Part 2 focuses on implementing the presentation layer (the "front-end") of the DCM user application. This includes developing an interface with a welcome screen, user registration/login capability (up to 10 local users), and interfaces to present all four required pacing modes (AOO, VOO, AAI, VVI) and their corresponding programmable parameters. Importantly, communications between the DCM and the Pacemaker are specifically excluded from the scope of this deliverable
+.
+
 
 ### 2.2 Requirements
 
