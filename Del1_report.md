@@ -8,7 +8,7 @@ Fall 2025
 ## 1. Group Members
 
 - Justin Shin, shinj37, 400467486
-- Name, MACID, Student Number
+- Raj Pandya, pandyr2, 402425318
 - Name, MACID, Student Number
 
 ---
@@ -105,7 +105,18 @@ Provides Inhibited Pacing in the Ventricle. A ventricular sense (VS) inhibits a 
 
 ### 3.1 Requirements Potential Changes
 
-[Identify which requirements may evolve in the next deliverable (e.g., adding more modes, communication, new parameters).]
+#### Pacemaker Requirements Changes
+
+
+
+#### DCM Requirements Changes
+Several DCM requirements will expand significantly in Deliverable 2 to transform the interface from a standalone GUI into a fully integrated system controller. The most substantial change involves implementing serial communication between the DCM and pacemaker, which represents a fundamental architectural shift from the current design. In Deliverable 1, the DCM operates as an isolated presentation layer with local parameter storage and validation. However, Deliverable 2 requires the DCM to actively program the physical pacemaker device over a communication link, transmitting programmable parameters and receiving real-time data. This integration necessitates the implementation of parameter verification mechanisms to ensure that values sent from the DCM match those stored on the pacemaker, thereby guaranteeing data integrity across the system.
+
+The scope of supported pacing modes will also expand considerably. While Deliverable 1 focuses on four basic permanent state pacing modes (AOO, VOO, AAI, and VVI), Deliverable 2 requires support for four additional rate-adaptive modes: AOOR, VOOR, AAIR, and VVIR. These rate-adaptive modes introduce new programmable parameters related to activity sensing, including Maximum Sensor Rate (MSR), Activity Threshold, Reaction Time, and Recovery Time. The DCM interface must be extended to accommodate these additional parameters while maintaining clear organization and usability for the clinician user.
+
+Another major functional addition is the requirement to display real-time electrogram (egram) data received from the pacemaker. The DCM must visualize live cardiac signals for the atrial channel, ventricular channel, or both simultaneously, depending on the selected pacing mode. This represents a significant expansion of the user interface to include time-stamped signal traces with event marker annotations, transforming the DCM from a simple parameter configuration tool into a comprehensive monitoring and diagnostic platform.
+
+Finally, the specifications for programmable parameters have been refined with precisely defined ranges and increments. Pulse Amplitude must now support values from 0.1 to 5.0 V with 0.1 V increments, Pulse Width must range from 1 to 30 ms with 1 ms increments, and Sensitivity must span 0 to 5.0 V with 0.1 V increments. These precise constraints require careful consideration of data type selection to ensure representational accuracy during both storage and transmission. Additionally, documentation requirements now emphasize traceability, requiring clear demonstration of how parameters originate at the DCM interface and are ultimately implemented on the device. The selection of data types for parameter representation and communication must be explicitly justified to ensure both accuracy and reliability throughout the system.
 
 ### 3.2 Design Decision Potential Changes
 
