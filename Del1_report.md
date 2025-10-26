@@ -9,6 +9,7 @@ Fall 2025
 
 - Justin Shin, shinj37, 400467486
 - Raj Pandya, pandyr2, 402425318
+- Joshua Obljubek-Thomas, obljubej, 400506256
 - Name, MACID, Student Number
 
 ---
@@ -76,28 +77,103 @@ Provides Inhibited Pacing in the Ventricle. A ventricular sense (VS) inhibits a 
 
 ## 2.3 Design
 
-[Expand on the design decisions based on the requirements. Be specific about your system design and how the various components relate together.]
+### System Architecture
 
-#### System Architecture
-[Major subsystems, hardware hiding, pin mapping]
+The pacemaker system is divided into two core subsystems: the **Pacemaker Module** (implemented in Simulink) and the **Device Controller-Monitor (DCM)** application.   The Pacemaker handles real-time signal sensing, pulse generation, and pacing logic, while the DCM provides a graphical interface for clinicians to configure and monitor programmable parameters.  
+
+#### Subsystem Overview
+- **Hardware Layer:** Implements hardware hiding through a Simulink Subsystem that abstracts physical pins from the logical model. This ensures portability: hardware mappings can change without altering the internal stateflow logic.  
+- **Control Layer (Simulink):** – Implements four stateflow charts for permanent pacing modes (AOO, VOO, AAI, VVI). Each chart defines timing intervals, sense detection, and pace output behavior.  
+- **Interface Layer (DCM):** – Desktop GUI that allows user login, parameter input, and mode selection. For Deliverable 1, it functions locally with parameter validation but no communication link to the pacemaker.
+
 
 #### Programmable Parameters
-[Rate limits, amplitudes, pulse widths, refractory periods, etc.]
+
+| **Parameter** | **Variable Name (in Simulink)** | **Range / Values** | **Units** | **Description** |
+|----------------|----------------------------------|--------------------|------------|------------------|
+| **Pacing Mode** | PACING_MODE | {1=AOO, 2=VOO, 3=AAI, 4=VVI} | — | Selects one of the four permanent pacing modes |
+| **Lower Rate Limit** | LOWER_RATE_LIMIT | 30–175 | ppm | Minimum pacing rate (maximum allowable interval between pacing pulses) |
+| **Upper Rate Limit** | UPPER_RATE_LIMIT | 50–175 | ppm | Maximum pacing rate limit |
+| **Atrial Amplitude** | ATRIAL_AMPLITUDE | 0.1–5.0 | V | Output pulse amplitude for the atrium |
+| **Ventricular Amplitude** | VENTRICULAR_AMPLITUDE | 0.1–5.0 | V | Output pulse amplitude for the ventricle |
+| **Atrial Pulse Width** |ATRIAL_PULSE_WIDTH | 1–30 | ms | Duration of each atrial pacing pulse |
+| **Ventricular Pulse Width** | VENTRICULAR_PULSE_WIDTH | 1–30 | ms | Duration of each ventricular pacing pulse |
+| **Atrial Sensitivity** |ATRIAL_SENSITIVITY | 0.25–10 | mV | Minimum atrial signal amplitude that will be detected as an intrinsic beat |
+| **Ventricular Sensitivity** | VENTRICULAR_SENSITIVITY | 0.25–10 | mV | Minimum ventricular signal amplitude that will be detected as an intrinsic beat |
+| **Atrial Refractory Period** | ARP | 150–500 | ms | Time after an atrial event during which sensing is disabled |
+| **Ventricular Refractory Period** | VRP | 150–500 | ms | Time after a ventricular event during which sensing is disabled |
+| **Post-Ventricular Atrial Refractory Period** | PVARP | 150–500 | ms | Extension of atrial refractory period following a ventricular event |
+| **Hysteresis** | HYSTERESIS | Off | — | Enables a lower pacing rate following sensed events |
+| **Rate Smoothing** | RATE_SMOOTHING | Off, 3–25 % | — | Controls gradual pacing rate adjustments to prevent abrupt changes |
+
 
 #### Hardware Inputs and Outputs
-[Signals sensed, signals controlled]
+
+| **Signal** | **Direction** | **Description** |
+|-------------|---------------|------------------|
+| ATR_CMP_DETECT | Input | Indicates intrinsic atrial depolarization |
+| VENT_CMP_DETECT | Input | Indicates intrinsic ventricular depolarization |
+| ATR_PACE_CTRL, VENT_PACE_CTRL | Output | Deliver pacing pulses for the atrium and ventricle |
+| PACE_CHARGE_CTRL | Output | Controls pacing capacitor charge cycle |
+| PACE_GND_CTRL, ATR_GND_CTRL, VENT_GND_CTRL | Output | Provide ground reference for pacing current |
+| PACING_REF_PWM, VENT_CMP_REF_PWM | Output | Generate analog PWM pacing waveforms |
+| Z_ATR_CTRL, Z_VENT_CTRL | Output | Manage output zeroing and isolation stages |
 
 #### State Machine Design
-[State machine design for each pacing mode with diagrams or tabular method]
+
+The Stateflow chart Pacemaker_States governs pacing for all four modes.  
+At startup, the **Initial_State** resets all outputs and then branches permanently to one of the mode states based on p_pacing_mode:
+
+<img width="850" height="520" alt="Pacemaker_States Overview" src="https://github.com/user-attachments/assets/d56ac71e-990d-43e2-b23b-66fe8b0674ab" />
+
+| **Mode Code** | **Branch Entered** | **Behavior** |
+|----------------|-------------------|---------------|
+| 1 | AOO | Asynchronous atrial pacing |
+| 2 | VOO | Asynchronous ventricular pacing |
+| 3 | AAI | Atrial inhibited pacing |
+| 4 | VVI | Ventricular inhibited pacing |
+
+#### **AOO – Atrial Asynchronous Mode**
+<img width="750" height="430" alt="AOO State Machine" src="https://github.com/user-attachments/assets/39b64940-520f-4f48-84b1-d0419c8a0965" />
+
+- **Charge_AOO** – represents the interval between pacing pulses. The system waits for after(discharge_time, msec) before firing.  
+- **Discharge_AOO** – activates ATR_PACE_CTRL to deliver an atrial pulse for p_atr_pw milliseconds, then returns to charging.  
+- Operates purely on timing; sensing inputs are ignored, providing continuous fixed-rate atrial pacing.
+
+#### **VOO – Ventricular Asynchronous Mode**
+<img width="750" height="430" alt="VOO State Machine" src="https://github.com/user-attachments/assets/3720a02d-3d91-43c7-98bd-52690579efe2" />
+
+- **Charge_VOO** – waits for after(discharge_time, msec) before triggering a pulse.  
+- **Discharge_VOO** – drives VENT_PACE_CTRL and PACE_GND_CTRL for p_vent_pw milliseconds to produce a ventricular pacing pulse, then resets.  
+- Like AOO, VOO functions asynchronously but controls the ventricular output instead of the atrial channel.
+
+#### **AAI – Atrial Inhibited Mode**
+<img width="750" height="430" alt="AAI State Machine" src="https://github.com/user-attachments/assets/e39f5142-7658-4809-aea6-29dfcc3ddec9" />
+
+- **Charge_AAI** – monitors ATR_CMP_DETECT.  
+  - If an intrinsic atrial event occurs, pacing is inhibited.  
+  - If none occurs during discharge_time, transitions to Discharge_AAI.  
+- **Discharge_AAI** – delivers an atrial pulse (ATR_PACE_CTRL) for p_atr_pw milliseconds.  
+- **Initial_AAI** – establishes mode setup before the pacing loop begins.  
+- Incorporates p_arp for refractory control.
+
+#### **VVI – Ventricular Inhibited Mode**
+<img width="750" height="430" alt="VVI State Machine" src="https://github.com/user-attachments/assets/c798de58-1d3d-4015-a88a-a5cfb73015e9" />
+
+- **Charge_VVI** – monitors VENT_CMP_DETECT.  
+  - If intrinsic ventricular activity is detected, pacing is inhibited.  
+  - If no activity is detected after discharge_time, transitions to Discharge_VVI.  
+- **Discharge_VVI** – enables VENT_PACE_CTRL for p_vent_pw milliseconds, then enters the next cycle.  
+- Uses p_vrp to define the ventricular refractory window and prevent false triggers.
+
 
 #### Simulink Diagram
-[Insert Simulink diagram screenshot]
+<img width="2117" height="1136" alt="image" src="https://github.com/user-attachments/assets/ddbcbf9d-96b2-43d0-9da2-cd700a6b000d" />
+
 
 #### DCM Screenshots
 [Screenshots of your DCM, explaining its software structure]
 
-#### Requirements Traceability
-[How design decisions map directly to requirements]
 
 ---
 
