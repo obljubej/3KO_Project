@@ -196,19 +196,12 @@ class PacemakerParameters:
 
         return mode_parameters
 
-    def __init__(self):
-        """Initialize pacemaker parameters with configuration from JSON."""
-        self.MODE_PARAMETERS = self._load_mode_parameters()
-        self.current_mode = PacemakerMode.AOO
-        self.parameters = {}
-        self._initialize_parameters()
-
     def _initialize_parameters(self):
         """Initialize parameters for all modes with default values."""
         for mode, params in self.MODE_PARAMETERS.items():
             self.parameters[mode.value] = {}
-            for param_name, config in params.items():
-                self.parameters[mode.value][param_name] = config["default"]
+            for param_name, param_config in params.items():
+                self.parameters[mode.value][param_name] = param_config["default"]
 
     def get_parameters_for_mode(self, mode: PacemakerMode) -> Dict[str, Any]:
         """Get parameters for a specific mode."""
@@ -233,10 +226,11 @@ class PacemakerParameters:
         if value < config["min"] or value > config["max"]:
             return False, f"Value must be between {config['min']} and {config['max']} {config['unit']}"
 
-        # Validate step
+        # Validate step (with tolerance for floating point precision)
         if config["step"] > 0:
             steps = (value - config["min"]) / config["step"]
-            if not steps.is_integer():
+            # Allow small floating point errors
+            if abs(steps - round(steps)) > 0.0001:
                 return False, f"Value must be in increments of {config['step']} {config['unit']}"
 
         self.parameters[self.current_mode.value][param_name] = value
@@ -910,9 +904,24 @@ Inst. Name: {device_info.get("inst_name", "McMaster")}"""
         for i in range(4):
             self.params_frame.grid_columnconfigure(i, weight=1)
 
-        # Save button
+        # Save button and info frame
+        button_info_frame = tk.Frame(main_content, bg=custom_style.get_colors()["background"])
+        button_info_frame.grid(row=1, column=1, padx=20, pady=10, sticky="ew")
+
+        # Mode info label
+        self.mode_info_label = tk.Label(
+            button_info_frame,
+            text="",
+            font=custom_style.get_fonts()["small"],
+            fg=custom_style.get_colors()["text_light"],
+            bg=custom_style.get_colors()["background"],
+            justify="left",
+            anchor="w",
+        )
+        self.mode_info_label.pack(side="left", padx=(0, 20))
+
         save_btn = tk.Button(
-            main_content,
+            button_info_frame,
             text="Save Parameters",
             command=self._save_parameters,
             font=custom_style.get_fonts()["button"],
@@ -924,7 +933,7 @@ Inst. Name: {device_info.get("inst_name", "McMaster")}"""
             activebackground=custom_style.get_colors()["success_light"],
             activeforeground=custom_style.get_colors()["text_on_dark"],
         )
-        save_btn.grid(row=1, column=1, padx=20, pady=10, sticky="e")
+        save_btn.pack(side="right")
 
         # Initialize parameter widgets
         self._update_parameter_widgets()
@@ -944,15 +953,18 @@ Inst. Name: {device_info.get("inst_name", "McMaster")}"""
         row = 0
         col = 0
 
-        for param_name, config in mode_params.items():
+        for param_name, param_config in mode_params.items():
             self._create_parameter_widget(
-                param_name, config, current_values.get(param_name, config["default"]), row, col
+                param_name, param_config, current_values.get(param_name, param_config["default"]), row, col
             )
 
             col += 1
             if col >= 4:
                 col = 0
                 row += 1
+
+        # Update mode info label with behavior description
+        self._update_mode_info_label()
 
     def _create_parameter_widget(self, param_name: str, config: Dict, current_value: float, row: int, col: int):
         """Create a parameter control widget."""
@@ -1036,6 +1048,19 @@ Inst. Name: {device_info.get("inst_name", "McMaster")}"""
         entry.bind("<Return>", update_slider_from_entry)
         slider.configure(command=lambda v, p=param_name: update_entry_from_slider(v, p))
 
+    def _update_mode_info_label(self):
+        """Update the mode info label with current mode behavior."""
+        mode_info = {
+            PacemakerMode.VOO: "VOO: Asynchronous (Stubborn) - Always paces ventricle at LRL, ignores sensing",
+            PacemakerMode.AOO: "AOO: Asynchronous (Stubborn) - Always paces atrium at LRL, ignores sensing",
+            PacemakerMode.VVI: "VVI: Demand (Lazy) - Paces ventricle only when needed, inhibited by natural beats",
+            PacemakerMode.AAI: "AAI: Demand (Lazy) - Paces atrium only when needed, inhibited by natural P-waves",
+        }
+
+        info_text = mode_info.get(self.current_mode, "")
+        if hasattr(self, "mode_info_label"):
+            self.mode_info_label.config(text=info_text)
+
     def _on_mode_changed(self, event=None):
         """Handle pacemaker mode change."""
         try:
@@ -1049,16 +1074,29 @@ Inst. Name: {device_info.get("inst_name", "McMaster")}"""
     def _save_parameters(self):
         """Save current parameter values."""
         # Validate and save parameters
+        errors = []
         for param_name, widgets in self.parameter_widgets.items():
             try:
-                value = float(widgets["value_var"].get())
+                value_str = widgets["value_var"].get().strip()
+                if not value_str:
+                    errors.append(f"{param_name.replace('_', ' ').title()}: Value cannot be empty")
+                    continue
+
+                value = float(value_str)
                 success, error_msg = self.parameters.set_parameter(param_name, value)
                 if not success:
-                    messagebox.showerror("Validation Error", f"{param_name}: {error_msg}")
-                    return
+                    # Format parameter name nicely
+                    display_name = param_name.replace("_", " ").title()
+                    errors.append(f"{display_name}: {error_msg}")
             except ValueError:
-                messagebox.showerror("Validation Error", f"{param_name}: Invalid number format")
-                return
+                display_name = param_name.replace("_", " ").title()
+                errors.append(f"{display_name}: Invalid number format. Please enter a valid number.")
+
+        # Show all errors at once
+        if errors:
+            error_message = "Please correct the following errors:\n\n" + "\n".join(f"• {err}" for err in errors)
+            messagebox.showerror("Validation Error", error_message)
+            return
 
         # Save to user profile
         current_user = self.user_manager.get_current_user()
@@ -1067,6 +1105,7 @@ Inst. Name: {device_info.get("inst_name", "McMaster")}"""
                 "mode": self.current_mode.value,
                 "parameters": self.parameters.get_current_parameters(),
             }
+            self.user_manager._save_users()
 
         messagebox.showinfo("Success", "Parameters saved successfully!")
 
