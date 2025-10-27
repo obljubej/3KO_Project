@@ -34,10 +34,6 @@ class PacemakerMode(Enum):
     VOO = "VOO"
     AAI = "AAI"
     VVI = "VVI"
-    AOOR = "AOOR"
-    AAIR = "AAIR"
-    VOOR = "VOOR"
-    VVIR = "VVIR"
 
 
 @dataclass
