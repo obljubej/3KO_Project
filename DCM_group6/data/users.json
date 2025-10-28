@@ -2,6 +2,54 @@
   "yax": {
     "username": "yax",
     "password": "1234",
+    "first_name": "",
+    "last_name": "",
+    "age": "",
+    "profile_data": {
+      "pacemaker_parameters": {
+        "mode": "AAI",
+        "parameters": {
+          "Lower_Rate_Limit": 170.0,
+          "Upper_Rate_Limit": 175.0,
+          "Atrial_Amplitude": 0.5,
+          "Atrial_Pulse_Width": 0.5,
+          "Atrial_Sensitivity": 2.7,
+          "ARP": 360.0,
+          "PVARP": 250.0,
+          "Hysteresis": 140.0,
+          "Rate_Smoothing": 0.0
+        }
+      }
+    }
+  },
+  "raj": {
+    "username": "raj",
+    "password": "1234",
+    "first_name": "raj",
+    "last_name": "pandya",
+    "age": "99",
+    "profile_data": {
+      "pacemaker_parameters": {
+        "mode": "VVI",
+        "parameters": {
+          "Lower_Rate_Limit": 30.0,
+          "Upper_Rate_Limit": 50.0,
+          "Ventricular_Amplitude": 0.0,
+          "Ventricular_Pulse_Width": 0.1,
+          "Ventricular_Sensitivity": 0.0,
+          "VRP": 150.0,
+          "Hysteresis": 0.0,
+          "Rate_Smoothing": 0.0
+        }
+      }
+    }
+  },
+  "arsh": {
+    "username": "arsh",
+    "password": "1234",
+    "first_name": "arsh",
+    "last_name": "chughtai",
+    "age": "21",
     "profile_data": {}
   }
 }

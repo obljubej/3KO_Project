@@ -1112,6 +1112,13 @@ Inst. Name: {device_info.get("inst_name", "McMaster")}"""
     def _load_user_parameters(self):
         """Load parameters from user profile."""
         current_user = self.user_manager.get_current_user()
+
+        # Reset to default mode and parameters first
+        self.current_mode = PacemakerMode.AOO
+        self.mode_var.set(self.current_mode.value)
+        self.parameters.set_mode(self.current_mode)
+
+        # Load saved parameters if they exist
         if current_user and "pacemaker_parameters" in current_user.profile_data:
             param_data = current_user.profile_data["pacemaker_parameters"]
             if "mode" in param_data:
@@ -1125,6 +1132,9 @@ Inst. Name: {device_info.get("inst_name", "McMaster")}"""
             if "parameters" in param_data:
                 for param_name, value in param_data["parameters"].items():
                     self.parameters.set_parameter(param_name, value)
+
+        # Always update the UI to reflect the current parameters (default or loaded)
+        self._update_parameter_widgets()
 
     def _show_egram_data(self):
         """Show EGRAM data visualization window."""
@@ -1371,7 +1381,7 @@ class AboutWindow(tk.Toplevel):
         # Title
         title_label = tk.Label(
             main_frame,
-            text="About - Device Information",
+            text="Device Info",
             font=custom_style.get_fonts()["title"],
             fg=custom_style.get_colors()["primary"],
             bg=custom_style.get_colors()["surface"],
