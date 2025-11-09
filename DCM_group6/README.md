@@ -35,25 +35,30 @@ We are using socat, but you might need to use another tool based on the operatin
 
 If you are using socat, do the following operations:
 
-Create 3 different terminals and run the following in each one seperately:
+Goal: We want to see the data your application sends.
+- Your Application will send data to one port.
+- Our Listener will read data from the other port.
 
 Terminal 1:
 ```bash
 socat -d -d pTY,raw,echo=0 PTY,raw,echo=0
 ```
 
-This will create 2 ports, a listening port and a sending port, now you need to tell the application to use these ports. take note of the port names, it should look something like: /dev/ttys019 and /dev/ttys020, but the number might be different. 
+Note the two ports it prints. Example: N PTY is /dev/ttys019 (This is Port A) N PTY is /dev/ttys020 (This is Port B)
 
-Terminal 2: Use the port name to connect to the virtual port (adjust the port number as needed) use the listening port name
+Terminal 2: Set up the Listener on Port A We will listen to Port A and pipe its output to hexdump.
 ```bash
 socat /dev/ttys014,raw,echo=0 - | hexdump -C
 ```
 
-Terminal 3: Run the application, **UNDER `config/app_config.json`, change the `serial_port` to the recieving port namel**
+Terminal 3: Run the Application on Port B This is the program that will generate the data.
+- In config/app_config.json, set serial_port to the other port name from Terminal 1 (e.g., Port B). "serial_port": "/dev/ttys020"
+- Run your application:
+
 ```bash
 uv run run.py # just run the application with the above steps
 ```
 
-Remember, the ports are different for sending and receiving, so you need to use the correct port name. to see the data
+As soon as your application sends data to /dev/ttys020, it will travel through the virtual cable and appear in Terminal 2's hexdump output.
 
 Next click send data button and you should see the output in the second terminal.
