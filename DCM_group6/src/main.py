@@ -15,6 +15,8 @@ from typing import Any, Dict, Optional, Tuple
 
 import matplotlib.pyplot as plt
 import numpy as np
+import serial
+import serial.tools.list_ports
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from PIL import Image, ImageTk
 
@@ -634,9 +636,12 @@ class MainScreen(tk.Frame):
         self.on_logout = on_logout
         self.parameter_widgets = {}
         self.current_mode = PacemakerMode.AOO
+        self.serial_port = None
+        self.serial_connected = False
 
         self._setup_ui()
         self._load_user_parameters()
+        self._initialize_serial()
 
     def _setup_ui(self):
         """Set up the main screen UI."""
@@ -1165,8 +1170,38 @@ Inst. Name: {device_info.get("inst_name", "McMaster")}"""
         canvas.draw()
         canvas.get_tk_widget().pack(fill="both", expand=True)
 
+    def _initialize_serial(self):
+        """Initialize serial port connection."""
+        try:
+            configured_port = app_config.get("serial_port")
+            configured_baudrate = app_config.get("serial_baudrate", 115200)
+
+            if not configured_port:
+                print("No serial port configured in app_config.json")
+                self.serial_connected = False
+                return
+
+            print(f"Connecting to configured port: {configured_port}")
+            self.serial_port = serial.Serial(
+                port=configured_port,
+                baudrate=configured_baudrate,
+                bytesize=serial.EIGHTBITS,
+                parity=serial.PARITY_NONE,
+                stopbits=serial.STOPBITS_ONE,
+                timeout=1
+            )
+            self.serial_connected = True
+            print(f"✓ Connected to {configured_port} at {configured_baudrate} baud")
+
+        except (serial.SerialException, OSError) as e:
+            print(f"✗ Failed to connect to {configured_port}: {e}")
+            self.serial_connected = False
+        except Exception as e:
+            print(f"Serial initialization error: {e}")
+            self.serial_connected = False
+
     def _send_data(self):
-        """Send data to pacemaker device."""
+        """Send data to pacemaker device via UART."""
         if self.mode_var.get() == "None selected":
             messagebox.showwarning("Warning", "Please select a pacemaker mode first")
             return
@@ -1175,10 +1210,32 @@ Inst. Name: {device_info.get("inst_name", "McMaster")}"""
             # Create data packet
             data_packet = self._create_data_packet()
 
-            # Simulate serial communication
-            messagebox.showinfo("Data Sent", f"Sent {len(data_packet)} bytes to device")
-            print(f"Data packet: {data_packet}")
+            # Check if serial port is connected
+            if not self.serial_connected or self.serial_port is None:
+                # Try to reconnect
+                self._initialize_serial()
+                if not self.serial_connected:
+                    messagebox.showwarning(
+                        "Connection Error",
+                        "No serial connection available. Please connect the pacemaker device."
+                    )
+                    return
 
+            # Send data via UART
+            bytes_written = self.serial_port.write(data_packet)
+            self.serial_port.flush()  # Ensure data is sent immediately
+
+            messagebox.showinfo(
+                "Data Sent",
+                f"Successfully sent {bytes_written} bytes to device via UART\n"
+                f"Port: {self.serial_port.port}"
+            )
+            print(f"Data sent via UART (hex): {data_packet.hex()}")
+            print(f"Bytes written: {bytes_written}")
+
+        except serial.SerialException as e:
+            self.serial_connected = False
+            messagebox.showerror("Serial Error", f"Failed to send data via UART: {e}")
         except Exception as e:
             messagebox.showerror("Error", f"Failed to send data: {e}")
 
@@ -1228,7 +1285,43 @@ Inst. Name: {device_info.get("inst_name", "McMaster")}"""
     def _handle_logout(self):
         """Handle logout."""
         if messagebox.askyesno("Logout", "Are you sure you want to logout?"):
+            self._cleanup_serial()
             self.on_logout()
+
+    def _cleanup_serial(self):
+        """Clean up serial port connection."""
+        try:
+            if self.serial_port and self.serial_port.is_open:
+                self.serial_port.close()
+                print("Serial port closed")
+        except Exception as e:
+            print(f"Error closing serial port: {e}")
+        finally:
+            self.serial_connected = False
+            self.serial_port = None
+
+    def _reconnect_serial(self, port_name: str):
+        """Reconnect to a specific serial port."""
+        try:
+            # Close existing connection
+            self._cleanup_serial()
+
+            # Open new connection
+            self.serial_port = serial.Serial(
+                port=port_name,
+                baudrate=115200,
+                bytesize=serial.EIGHTBITS,
+                parity=serial.PARITY_NONE,
+                stopbits=serial.STOPBITS_ONE,
+                timeout=1
+            )
+            self.serial_connected = True
+            print(f"Reconnected to serial port: {port_name}")
+            messagebox.showinfo("Serial Connection", f"Connected to {port_name}")
+
+        except (serial.SerialException, OSError) as e:
+            self.serial_connected = False
+            messagebox.showerror("Connection Error", f"Failed to connect to {port_name}: {e}")
 
 
 class SettingsWindow(tk.Toplevel):
@@ -1312,6 +1405,34 @@ class SettingsWindow(tk.Toplevel):
         )
         scaling_combo.pack(pady=(0, 20))
 
+        # Serial Port Configuration
+        tk.Label(
+            main_frame,
+            text="Serial Port:",
+            font=custom_style.get_fonts()["subheading"],
+            fg=custom_style.get_colors()["text"],
+            bg=custom_style.get_colors()["surface"],
+        ).pack(pady=(0, 5))
+
+        # Get available serial ports
+        available_ports = [port.device for port in serial.tools.list_ports.comports()]
+        if not available_ports:
+            available_ports = ["No ports detected"]
+
+        current_port = "Auto-detect"
+        if hasattr(self.parent, "serial_port") and self.parent.serial_port:
+            current_port = self.parent.serial_port.port
+
+        self.serial_port_var = tk.StringVar(value=current_port)
+        serial_port_combo = ttk.Combobox(
+            main_frame,
+            textvariable=self.serial_port_var,
+            values=["Auto-detect"] + available_ports,
+            state="readonly",
+            width=20,
+        )
+        serial_port_combo.pack(pady=(0, 20))
+
         # Buttons
         button_frame = tk.Frame(main_frame, bg=custom_style.get_colors()["surface"])
         button_frame.pack(fill="x", pady=20)
@@ -1355,6 +1476,12 @@ class SettingsWindow(tk.Toplevel):
         scaling = self.scaling_var.get().replace("%", "")
         if scaling != "100":
             messagebox.showinfo("Settings", f"UI scaling set to {scaling}%")
+
+        # Handle serial port change
+        selected_port = self.serial_port_var.get()
+        if selected_port != "Auto-detect" and selected_port != "No ports detected":
+            if hasattr(self.parent, "_reconnect_serial"):
+                self.parent._reconnect_serial(selected_port)
 
         messagebox.showinfo("Settings", "Settings saved successfully!")
         self.destroy()
