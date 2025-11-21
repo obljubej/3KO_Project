@@ -5,28 +5,36 @@
       "max": 175,
       "step": 5,
       "unit": "ppm",
-      "default": 60
+      "default": 60,
+      "data_type": "int",
+      "packet_format": "H"
     },
     "Upper_Rate_Limit": {
       "min": 50,
       "max": 175,
       "step": 5,
       "unit": "ppm",
-      "default": 120
+      "default": 120,
+      "data_type": "int",
+      "packet_format": "H"
     },
     "Atrial_Amplitude": {
       "min": 0.0,
-      "max": 7.0,
+      "max": 5.0,
       "step": 0.1,
       "unit": "V",
-      "default": 3.5
+      "default": 3.5,
+      "data_type": "float",
+      "packet_format": "f"
     },
     "Atrial_Pulse_Width": {
       "min": 0.1,
       "max": 1.9,
       "step": 0.1,
       "unit": "ms",
-      "default": 0.4
+      "default": 0.4,
+      "data_type": "float",
+      "packet_format": "f"
     }
   },
   "VOO": {
@@ -35,28 +43,36 @@
       "max": 175,
       "step": 5,
       "unit": "ppm",
-      "default": 60
+      "default": 60,
+      "data_type": "int",
+      "packet_format": "H"
     },
     "Upper_Rate_Limit": {
       "min": 50,
       "max": 175,
       "step": 5,
       "unit": "ppm",
-      "default": 120
+      "default": 120,
+      "data_type": "int",
+      "packet_format": "H"
     },
     "Ventricular_Amplitude": {
       "min": 0.0,
-      "max": 7.0,
+      "max": 5.0,
       "step": 0.1,
       "unit": "V",
-      "default": 3.5
+      "default": 3.5,
+      "data_type": "float",
+      "packet_format": "f"
     },
     "Ventricular_Pulse_Width": {
       "min": 0.1,
       "max": 1.9,
       "step": 0.1,
       "unit": "ms",
-      "default": 0.4
+      "default": 0.4,
+      "data_type": "float",
+      "packet_format": "f"
     }
   },
   "AAI": {
@@ -65,63 +81,81 @@
       "max": 175,
       "step": 5,
       "unit": "ppm",
-      "default": 60
+      "default": 60,
+      "data_type": "int",
+      "packet_format": "H"
     },
     "Upper_Rate_Limit": {
       "min": 50,
       "max": 175,
       "step": 5,
       "unit": "ppm",
-      "default": 120
+      "default": 120,
+      "data_type": "int",
+      "packet_format": "H"
     },
     "Atrial_Amplitude": {
       "min": 0.0,
-      "max": 7.0,
+      "max": 5.0,
       "step": 0.1,
       "unit": "V",
-      "default": 3.5
+      "default": 3.5,
+      "data_type": "float",
+      "packet_format": "f"
     },
     "Atrial_Pulse_Width": {
       "min": 0.1,
       "max": 1.9,
       "step": 0.1,
       "unit": "ms",
-      "default": 0.4
+      "default": 0.4,
+      "data_type": "float",
+      "packet_format": "f"
     },
     "Atrial_Sensitivity": {
       "min": 0.0,
-      "max": 10.0,
+      "max": 5.0,
       "step": 0.1,
       "unit": "mV",
-      "default": 0.75
+      "default": 0.75,
+      "data_type": "float",
+      "packet_format": "f"
     },
     "ARP": {
       "min": 150,
       "max": 500,
       "step": 10,
       "unit": "ms",
-      "default": 250
+      "default": 250,
+      "data_type": "int",
+      "packet_format": "H"
     },
     "PVARP": {
       "min": 150,
       "max": 500,
       "step": 10,
       "unit": "ms",
-      "default": 250
+      "default": 250,
+      "data_type": "int",
+      "packet_format": "H"
     },
     "Hysteresis": {
       "min": 0,
       "max": 175,
       "step": 5,
       "unit": "ppm",
-      "default": 0
+      "default": 0,
+      "data_type": "int",
+      "packet_format": "H"
     },
     "Rate_Smoothing": {
       "min": 0,
       "max": 25,
       "step": 3,
       "unit": "%",
-      "default": 0
+      "default": 0,
+      "data_type": "int",
+      "packet_format": "H"
     }
   },
   "VVI": {
@@ -130,56 +164,509 @@
       "max": 175,
       "step": 5,
       "unit": "ppm",
-      "default": 60
+      "default": 60,
+      "data_type": "int",
+      "packet_format": "H"
     },
     "Upper_Rate_Limit": {
       "min": 50,
       "max": 175,
       "step": 5,
       "unit": "ppm",
-      "default": 120
+      "default": 120,
+      "data_type": "int",
+      "packet_format": "H"
     },
     "Ventricular_Amplitude": {
       "min": 0.0,
-      "max": 7.0,
+      "max": 5.0,
       "step": 0.1,
       "unit": "V",
-      "default": 3.5
+      "default": 3.5,
+      "data_type": "float",
+      "packet_format": "f"
     },
     "Ventricular_Pulse_Width": {
       "min": 0.1,
       "max": 1.9,
       "step": 0.1,
       "unit": "ms",
-      "default": 0.4
+      "default": 0.4,
+      "data_type": "float",
+      "packet_format": "f"
     },
     "Ventricular_Sensitivity": {
       "min": 0.0,
-      "max": 10.0,
+      "max": 5.0,
       "step": 0.1,
       "unit": "mV",
-      "default": 2.5
+      "default": 2.5,
+      "data_type": "float",
+      "packet_format": "f"
     },
     "VRP": {
       "min": 150,
       "max": 500,
       "step": 10,
       "unit": "ms",
-      "default": 320
+      "default": 320,
+      "data_type": "int",
+      "packet_format": "H"
     },
     "Hysteresis": {
       "min": 0,
       "max": 175,
       "step": 5,
       "unit": "ppm",
-      "default": 0
+      "default": 0,
+      "data_type": "int",
+      "packet_format": "H"
     },
     "Rate_Smoothing": {
       "min": 0,
       "max": 25,
       "step": 3,
       "unit": "%",
-      "default": 0
+      "default": 0,
+      "data_type": "int",
+      "packet_format": "H"
+    }
+  },
+  "AOOR": {
+    "Lower_Rate_Limit": {
+      "min": 30,
+      "max": 175,
+      "step": 5,
+      "unit": "ppm",
+      "default": 60,
+      "data_type": "int",
+      "packet_format": "H"
+    },
+    "Upper_Rate_Limit": {
+      "min": 50,
+      "max": 175,
+      "step": 5,
+      "unit": "ppm",
+      "default": 120,
+      "data_type": "int",
+      "packet_format": "H"
+    },
+    "Maximum_Sensor_Rate": {
+      "min": 50,
+      "max": 175,
+      "step": 5,
+      "unit": "ppm",
+      "default": 120,
+      "data_type": "int",
+      "packet_format": "H"
+    },
+    "Atrial_Amplitude": {
+      "min": 0.0,
+      "max": 5.0,
+      "step": 0.1,
+      "unit": "V",
+      "default": 3.5,
+      "data_type": "float",
+      "packet_format": "f"
+    },
+    "Atrial_Pulse_Width": {
+      "min": 0.1,
+      "max": 1.9,
+      "step": 0.1,
+      "unit": "ms",
+      "default": 0.4,
+      "data_type": "float",
+      "packet_format": "f"
+    },
+    "Activity_Threshold": {
+      "input_type": "enum",
+      "options": [
+        "V-Low",
+        "Low",
+        "Med-Low",
+        "Med",
+        "Med-High",
+        "High",
+        "V-High"
+      ],
+      "unit": "level",
+      "default": "Med",
+      "packet_format": "B"
+    },
+    "Reaction_Time": {
+      "min": 10,
+      "max": 50,
+      "step": 10,
+      "unit": "s",
+      "default": 30,
+      "data_type": "int",
+      "packet_format": "H"
+    },
+    "Response_Factor": {
+      "min": 1,
+      "max": 16,
+      "step": 1,
+      "unit": "",
+      "default": 8,
+      "data_type": "int",
+      "packet_format": "B"
+    },
+    "Recovery_Time": {
+      "min": 2,
+      "max": 16,
+      "step": 1,
+      "unit": "min",
+      "default": 5,
+      "data_type": "int",
+      "packet_format": "B"
+    }
+  },
+  "VOOR": {
+    "Lower_Rate_Limit": {
+      "min": 30,
+      "max": 175,
+      "step": 5,
+      "unit": "ppm",
+      "default": 60,
+      "data_type": "int",
+      "packet_format": "H"
+    },
+    "Upper_Rate_Limit": {
+      "min": 50,
+      "max": 175,
+      "step": 5,
+      "unit": "ppm",
+      "default": 120,
+      "data_type": "int",
+      "packet_format": "H"
+    },
+    "Maximum_Sensor_Rate": {
+      "min": 50,
+      "max": 175,
+      "step": 5,
+      "unit": "ppm",
+      "default": 120,
+      "data_type": "int",
+      "packet_format": "H"
+    },
+    "Ventricular_Amplitude": {
+      "min": 0.0,
+      "max": 5.0,
+      "step": 0.1,
+      "unit": "V",
+      "default": 3.5,
+      "data_type": "float",
+      "packet_format": "f"
+    },
+    "Ventricular_Pulse_Width": {
+      "min": 0.1,
+      "max": 1.9,
+      "step": 0.1,
+      "unit": "ms",
+      "default": 0.4,
+      "data_type": "float",
+      "packet_format": "f"
+    },
+    "Activity_Threshold": {
+      "input_type": "enum",
+      "options": [
+        "V-Low",
+        "Low",
+        "Med-Low",
+        "Med",
+        "Med-High",
+        "High",
+        "V-High"
+      ],
+      "unit": "level",
+      "default": "Med",
+      "packet_format": "B"
+    },
+    "Reaction_Time": {
+      "min": 10,
+      "max": 50,
+      "step": 10,
+      "unit": "s",
+      "default": 30,
+      "data_type": "int",
+      "packet_format": "H"
+    },
+    "Response_Factor": {
+      "min": 1,
+      "max": 16,
+      "step": 1,
+      "unit": "",
+      "default": 8,
+      "data_type": "int",
+      "packet_format": "B"
+    },
+    "Recovery_Time": {
+      "min": 2,
+      "max": 16,
+      "step": 1,
+      "unit": "min",
+      "default": 5,
+      "data_type": "int",
+      "packet_format": "B"
+    }
+  },
+  "AAIR": {
+    "Lower_Rate_Limit": {
+      "min": 30,
+      "max": 175,
+      "step": 5,
+      "unit": "ppm",
+      "default": 60,
+      "data_type": "int",
+      "packet_format": "H"
+    },
+    "Upper_Rate_Limit": {
+      "min": 50,
+      "max": 175,
+      "step": 5,
+      "unit": "ppm",
+      "default": 120,
+      "data_type": "int",
+      "packet_format": "H"
+    },
+    "Maximum_Sensor_Rate": {
+      "min": 50,
+      "max": 175,
+      "step": 5,
+      "unit": "ppm",
+      "default": 120,
+      "data_type": "int",
+      "packet_format": "H"
+    },
+    "Atrial_Amplitude": {
+      "min": 0.0,
+      "max": 5.0,
+      "step": 0.1,
+      "unit": "V",
+      "default": 3.5,
+      "data_type": "float",
+      "packet_format": "f"
+    },
+    "Atrial_Pulse_Width": {
+      "min": 0.1,
+      "max": 1.9,
+      "step": 0.1,
+      "unit": "ms",
+      "default": 0.4,
+      "data_type": "float",
+      "packet_format": "f"
+    },
+    "Atrial_Sensitivity": {
+      "min": 0.0,
+      "max": 5.0,
+      "step": 0.1,
+      "unit": "mV",
+      "default": 0.75,
+      "data_type": "float",
+      "packet_format": "f"
+    },
+    "ARP": {
+      "min": 150,
+      "max": 500,
+      "step": 10,
+      "unit": "ms",
+      "default": 250,
+      "data_type": "int",
+      "packet_format": "H"
+    },
+    "PVARP": {
+      "min": 150,
+      "max": 500,
+      "step": 10,
+      "unit": "ms",
+      "default": 250,
+      "data_type": "int",
+      "packet_format": "H"
+    },
+    "Hysteresis": {
+      "min": 0,
+      "max": 175,
+      "step": 5,
+      "unit": "ppm",
+      "default": 0,
+      "data_type": "int",
+      "packet_format": "H"
+    },
+    "Rate_Smoothing": {
+      "min": 0,
+      "max": 25,
+      "step": 3,
+      "unit": "%",
+      "default": 0,
+      "data_type": "int",
+      "packet_format": "H"
+    },
+    "Activity_Threshold": {
+      "input_type": "enum",
+      "options": [
+        "V-Low",
+        "Low",
+        "Med-Low",
+        "Med",
+        "Med-High",
+        "High",
+        "V-High"
+      ],
+      "unit": "level",
+      "default": "Med",
+      "packet_format": "B"
+    },
+    "Reaction_Time": {
+      "min": 10,
+      "max": 50,
+      "step": 10,
+      "unit": "s",
+      "default": 30,
+      "data_type": "int",
+      "packet_format": "H"
+    },
+    "Response_Factor": {
+      "min": 1,
+      "max": 16,
+      "step": 1,
+      "unit": "",
+      "default": 8,
+      "data_type": "int",
+      "packet_format": "B"
+    },
+    "Recovery_Time": {
+      "min": 2,
+      "max": 16,
+      "step": 1,
+      "unit": "min",
+      "default": 5,
+      "data_type": "int",
+      "packet_format": "B"
+    }
+  },
+  "VVIR": {
+    "Lower_Rate_Limit": {
+      "min": 30,
+      "max": 175,
+      "step": 5,
+      "unit": "ppm",
+      "default": 60,
+      "data_type": "int",
+      "packet_format": "H"
+    },
+    "Upper_Rate_Limit": {
+      "min": 50,
+      "max": 175,
+      "step": 5,
+      "unit": "ppm",
+      "default": 120,
+      "data_type": "int",
+      "packet_format": "H"
+    },
+    "Maximum_Sensor_Rate": {
+      "min": 50,
+      "max": 175,
+      "step": 5,
+      "unit": "ppm",
+      "default": 120,
+      "data_type": "int",
+      "packet_format": "H"
+    },
+    "Ventricular_Amplitude": {
+      "min": 0.0,
+      "max": 5.0,
+      "step": 0.1,
+      "unit": "V",
+      "default": 3.5,
+      "data_type": "float",
+      "packet_format": "f"
+    },
+    "Ventricular_Pulse_Width": {
+      "min": 0.1,
+      "max": 1.9,
+      "step": 0.1,
+      "unit": "ms",
+      "default": 0.4,
+      "data_type": "float",
+      "packet_format": "f"
+    },
+    "Ventricular_Sensitivity": {
+      "min": 0.0,
+      "max": 5.0,
+      "step": 0.1,
+      "unit": "mV",
+      "default": 2.5,
+      "data_type": "float",
+      "packet_format": "f"
+    },
+    "VRP": {
+      "min": 150,
+      "max": 500,
+      "step": 10,
+      "unit": "ms",
+      "default": 320,
+      "data_type": "int",
+      "packet_format": "H"
+    },
+    "Hysteresis": {
+      "min": 0,
+      "max": 175,
+      "step": 5,
+      "unit": "ppm",
+      "default": 0,
+      "data_type": "int",
+      "packet_format": "H"
+    },
+    "Rate_Smoothing": {
+      "min": 0,
+      "max": 25,
+      "step": 3,
+      "unit": "%",
+      "default": 0,
+      "data_type": "int",
+      "packet_format": "H"
+    },
+    "Activity_Threshold": {
+      "input_type": "enum",
+      "options": [
+        "V-Low",
+        "Low",
+        "Med-Low",
+        "Med",
+        "Med-High",
+        "High",
+        "V-High"
+      ],
+      "unit": "level",
+      "default": "Med",
+      "packet_format": "B"
+    },
+    "Reaction_Time": {
+      "min": 10,
+      "max": 50,
+      "step": 10,
+      "unit": "s",
+      "default": 30,
+      "data_type": "int",
+      "packet_format": "H"
+    },
+    "Response_Factor": {
+      "min": 1,
+      "max": 16,
+      "step": 1,
+      "unit": "",
+      "default": 8,
+      "data_type": "int",
+      "packet_format": "B"
+    },
+    "Recovery_Time": {
+      "min": 2,
+      "max": 16,
+      "step": 1,
+      "unit": "min",
+      "default": 5,
+      "data_type": "int",
+      "packet_format": "B"
     }
   }
 }

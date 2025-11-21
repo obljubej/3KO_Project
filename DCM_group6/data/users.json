@@ -1,7 +1,7 @@
 {
   "yax": {
     "username": "yax",
-    "password": "1234",
+    "password": "6cb8624504b3349e164f0de2649bf10e$54199253c63600e2bc456e37f413398b6ed669b9ec597cfc21067c0b8b578bb0",
     "first_name": "",
     "last_name": "",
     "age": "",
@@ -9,22 +9,22 @@
       "pacemaker_parameters": {
         "mode": "AAI",
         "parameters": {
-          "Lower_Rate_Limit": 170.0,
-          "Upper_Rate_Limit": 175.0,
-          "Atrial_Amplitude": 0.5,
+          "Lower_Rate_Limit": 170,
+          "Upper_Rate_Limit": 175,
+          "Atrial_Amplitude": 1.5,
           "Atrial_Pulse_Width": 0.5,
           "Atrial_Sensitivity": 2.7,
-          "ARP": 360.0,
-          "PVARP": 250.0,
-          "Hysteresis": 140.0,
-          "Rate_Smoothing": 0.0
+          "ARP": 360,
+          "PVARP": 250,
+          "Hysteresis": 140,
+          "Rate_Smoothing": 0
         }
       }
     }
   },
   "raj": {
     "username": "raj",
-    "password": "1234",
+    "password": "24da70bdbf43fd16c912df7f871b2bae$633f6ccd258c867992ef5dba78969be5f79bb5568fee8996866f386898ded967",
     "first_name": "raj",
     "last_name": "pandya",
     "age": "99",
@@ -46,7 +46,7 @@
   },
   "arsh": {
     "username": "arsh",
-    "password": "1234",
+    "password": "005d8870cb1e857bd4ce6898f3f00c08$6a2d92614309741a90515782a372cb74b8bfc0b088e831dd6136202745cf0742",
     "first_name": "arsh",
     "last_name": "chughtai",
     "age": "21",

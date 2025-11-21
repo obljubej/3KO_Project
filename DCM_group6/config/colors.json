@@ -11,7 +11,7 @@
   "text": "#212121",
   "text_secondary": "#424242",
   "text_light": "#757575",
-  "text_on_dark": "#424242",
+  "text_on_dark": "#FFFFFF",
   "success": "#1B5E20",
   "success_light": "#2E7D32",
   "warning": "#E65100",

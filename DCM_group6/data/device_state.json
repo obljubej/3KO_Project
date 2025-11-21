@@ -1,0 +1,14 @@
+{
+  "mode": "AAI",
+  "parameters": {
+    "Lower_Rate_Limit": 170,
+    "Upper_Rate_Limit": 175,
+    "Atrial_Amplitude": 0.5,
+    "Atrial_Pulse_Width": 0.5,
+    "Atrial_Sensitivity": 2.7,
+    "ARP": 360,
+    "PVARP": 250,
+    "Hysteresis": 140,
+    "Rate_Smoothing": 0
+  }
+}
