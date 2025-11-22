@@ -1,0 +1,11 @@
+rtGetInf.o: \
+ C:/Users/justi/OneDrive/Desktop/3K/3KO_Project/project_model_UPDATE_ert_rtw/rtGetInf.c \
+ C:/Users/justi/OneDrive/Desktop/3K/3KO_Project/project_model_UPDATE_ert_rtw/rtGetInf.h \
+ C:/Users/justi/OneDrive/Desktop/3K/3KO_Project/project_model_UPDATE_ert_rtw/rtwtypes.h \
+ C:/Users/justi/OneDrive/Desktop/3K/3KO_Project/project_model_UPDATE_ert_rtw/rt_nonfinite.h
+
+C:/Users/justi/OneDrive/Desktop/3K/3KO_Project/project_model_UPDATE_ert_rtw/rtGetInf.h:
+
+C:/Users/justi/OneDrive/Desktop/3K/3KO_Project/project_model_UPDATE_ert_rtw/rtwtypes.h:
+
+C:/Users/justi/OneDrive/Desktop/3K/3KO_Project/project_model_UPDATE_ert_rtw/rt_nonfinite.h:

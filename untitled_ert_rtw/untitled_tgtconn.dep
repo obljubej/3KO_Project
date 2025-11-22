@@ -1,0 +1,11 @@
+untitled_tgtconn.o: \
+ C:/Users/justi/OneDrive/Desktop/3K/3KO_Project/untitled_ert_rtw/untitled_tgtconn.c \
+ C:/Users/justi/OneDrive/Desktop/3K/3KO_Project/untitled_ert_rtw/rtwtypes.h \
+ C:/Program\ Files/MATLAB/R2020a/extern/include/RTIOStreamTgtAppSvc/RTIOStreamTgtAppSvcCIntrf.h \
+ C:/Program\ Files/MATLAB/R2020a/extern/include/RTIOStreamTgtAppSvc/RTIOStreamTgtAppSvc_dll.hpp
+
+C:/Users/justi/OneDrive/Desktop/3K/3KO_Project/untitled_ert_rtw/rtwtypes.h:
+
+C:/Program\ Files/MATLAB/R2020a/extern/include/RTIOStreamTgtAppSvc/RTIOStreamTgtAppSvcCIntrf.h:
+
+C:/Program\ Files/MATLAB/R2020a/extern/include/RTIOStreamTgtAppSvc/RTIOStreamTgtAppSvc_dll.hpp:

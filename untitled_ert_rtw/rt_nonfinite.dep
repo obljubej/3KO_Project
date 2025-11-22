@@ -1,0 +1,14 @@
+rt_nonfinite.o: \
+ C:/Users/justi/OneDrive/Desktop/3K/3KO_Project/untitled_ert_rtw/rt_nonfinite.c \
+ C:/Users/justi/OneDrive/Desktop/3K/3KO_Project/untitled_ert_rtw/rt_nonfinite.h \
+ C:/Users/justi/OneDrive/Desktop/3K/3KO_Project/untitled_ert_rtw/rtwtypes.h \
+ C:/Users/justi/OneDrive/Desktop/3K/3KO_Project/untitled_ert_rtw/rtGetNaN.h \
+ C:/Users/justi/OneDrive/Desktop/3K/3KO_Project/untitled_ert_rtw/rtGetInf.h
+
+C:/Users/justi/OneDrive/Desktop/3K/3KO_Project/untitled_ert_rtw/rt_nonfinite.h:
+
+C:/Users/justi/OneDrive/Desktop/3K/3KO_Project/untitled_ert_rtw/rtwtypes.h:
+
+C:/Users/justi/OneDrive/Desktop/3K/3KO_Project/untitled_ert_rtw/rtGetNaN.h:
+
+C:/Users/justi/OneDrive/Desktop/3K/3KO_Project/untitled_ert_rtw/rtGetInf.h:
